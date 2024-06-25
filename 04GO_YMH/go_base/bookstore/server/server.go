@@ -1,7 +1,9 @@
 package server
 
 import (
+	"bootstore/server/middleware"
 	"bootstore/store"
+	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -14,13 +16,18 @@ type BookStoreServer struct {
 }
 
 func NewBookStoreServer(addr string, s store.Store) *BookStoreServer {
-	srv := BookStoreServer{
+	srv := &BookStoreServer{
 		s:   s,
 		srv: &http.Server{Addr: addr},
 	}
 	router := mux.NewRouter()
-	router.HandleFunc("/book", srv.createBookHandler)
-	return nil
+	router.HandleFunc("/book", srv.createBookHandler).Methods("POST")
+	router.HandleFunc("/book/{id}", srv.updateBookHandler).Methods("POST")
+	router.HandleFunc("/book/{id}", srv.getBookHandler).Methods("GET")
+	router.HandleFunc("/book", srv.getAllBookHandler).Methods("GET")
+	router.HandleFunc("/book/{id}", srv.delBookHandler).Methods("DELETE")
+	srv.srv.Handler = middleware.Logging(middleware.Validating(router))
+	return srv
 }
 
 func (bs *BookStoreServer) createBookHandler(w http.ResponseWriter, req *http.Request) {
@@ -33,6 +40,9 @@ func (bs *BookStoreServer) createBookHandler(w http.ResponseWriter, req *http.Re
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+}
+func (bs *BookStoreServer) updateBookHandler(w http.ResponseWriter, req *http.Request) {
+
 }
 
 func (bs *BookStoreServer) getBookHandler(w http.ResponseWriter, req *http.Request) {
@@ -47,6 +57,14 @@ func (bs *BookStoreServer) getBookHandler(w http.ResponseWriter, req *http.Reque
 		return
 	}
 	response(w, book)
+}
+
+func (bs *BookStoreServer) getAllBookHandler(w http.ResponseWriter, req *http.Request) {
+
+}
+
+func (bs *BookStoreServer) delBookHandler(w http.ResponseWriter, req *http.Request) {
+
 }
 
 func (bs *BookStoreServer) ListenAndServer() (<-chan error, error) {
@@ -65,6 +83,16 @@ func (bs *BookStoreServer) ListenAndServer() (<-chan error, error) {
 
 }
 
+func (bs *BookStoreServer) Shutdown(contex context.Context) {
+
+}
+
+/*
+*
+
+	这些处理函数都是大同小异，都是先获取http请求包数据，然后通过标准库json将这些数据解码（decode）
+	为我们需要的store.Book结构实例，再通过Store接口对数据进行存储操作。
+*/
 func response(w http.ResponseWriter, v interface{}) {
 	data, err := json.Marshal(v)
 	if err != nil {
