@@ -23,7 +23,7 @@ type MemStore struct {
 
 func (m *MemStore) Create(book *store.Book) error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 func (m *MemStore) Update(book *store.Book) error {

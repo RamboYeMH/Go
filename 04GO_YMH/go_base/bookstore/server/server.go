@@ -83,8 +83,8 @@ func (bs *BookStoreServer) ListenAndServer() (<-chan error, error) {
 
 }
 
-func (bs *BookStoreServer) Shutdown(contex context.Context) {
-
+func (bs *BookStoreServer) Shutdown(contex context.Context) error {
+	return nil
 }
 
 /*

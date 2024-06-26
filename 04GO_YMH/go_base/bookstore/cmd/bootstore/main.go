@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "bootstore/internal/store"
 	"bootstore/server"
 	"bootstore/store/factory"
 	"context"
