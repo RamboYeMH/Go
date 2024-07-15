@@ -16,6 +16,7 @@ func init() {
 	})
 }
 
+// MemStore 内存存储
 type MemStore struct {
 	sync.RWMutex // 组合
 	books        map[string]*store.Book
