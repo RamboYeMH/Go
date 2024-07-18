@@ -166,7 +166,7 @@ func NewCounter() *newCounter {
 			cter.c <- cter.i
 		}
 	}()
-
+	//
 	return cter
 }
 
