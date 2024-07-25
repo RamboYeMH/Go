@@ -10,17 +10,22 @@ package algorithm
 
 func AIBubbleSort(data []int) []int {
 	for i := cap(data); i > 0; i-- {
+		var change bool
 		for j := 0; j < i-1; j++ {
 			a := data[j]
 			b := data[j+1]
 			if b >= a {
 				continue
 			}
+			change = true
 			a = a + b
 			b = a - b
 			a = a - b
 			data[j] = a
 			data[j+1] = b
+		}
+		if !change {
+			break
 		}
 	}
 	return data
