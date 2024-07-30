@@ -4,6 +4,7 @@ package algorithm
 插入排序
 */
 
+
 func InsertSort(source []int) []int {
 	for i := 0; i < len(source); i++ {
 		var temp = source[i]
