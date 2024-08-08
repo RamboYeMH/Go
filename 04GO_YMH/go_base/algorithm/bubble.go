@@ -9,6 +9,7 @@ package algorithm
 */
 
 func AIBubbleSort(data []int) []int {
+	// 当有序的时候change就为false 所以最好的情况就O(n)
 	for i := cap(data); i > 0; i-- {
 		var change bool
 		for j := 0; j < i-1; j++ {
